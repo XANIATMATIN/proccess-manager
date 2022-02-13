@@ -1,6 +1,6 @@
 <?php
 
-namespace MatinUtils\ProccessManager;
+namespace MatinUtils\ProcessManager;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
@@ -14,7 +14,7 @@ class ServiceProvider extends BaseServiceProvider
     public function boot()
     {
         $this->app->singleton('proccess-manager', function ($app) {
-            $archiver = new ProccessManager;
+            $archiver = new ProcessManager;
             return $archiver;
         });
     }

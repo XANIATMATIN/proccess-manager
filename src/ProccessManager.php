@@ -1,7 +1,7 @@
 <?php
 
-namespace MatinUtils\ProccessManager;
+namespace MatinUtils\ProcessManager;
 
-class ProccessManager
+class ProcessManager
 {
 }

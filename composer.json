@@ -1,5 +1,5 @@
 {
-    "name": "matin-utils/proccess-manager",
+    "name": "matin-utils/process-manager",
     "description": "managing multiple proccess with socket",
     "type": "library",
     "license": "MIT",
@@ -14,7 +14,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "MatinUtils\\ProccessManager\\ServiceProvider"
+                "MatinUtils\\ProcessManager\\ServiceProvider"
             ]
         }
     },
@@ -24,7 +24,7 @@
             "Functions.php"
         ],
         "psr-4": {
-            "MatinUtils\\ProccessManager\\": "src/"
+            "MatinUtils\\ProcessManager\\": "src/"
         }
     }
 }
