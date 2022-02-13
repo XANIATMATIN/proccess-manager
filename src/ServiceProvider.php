@@ -13,7 +13,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $this->app->singleton('proccess-manager', function ($app) {
+        $this->app->singleton('process-manager', function ($app) {
             $archiver = new ProcessManager;
             return $archiver;
         });
