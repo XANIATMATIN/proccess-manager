@@ -141,7 +141,7 @@ class ProcessManager
                 } else {
                     $this->taskQueue[] = new Task($clientKey, $input);
 
-                    // dump("3.new request from client $clientKey. " . strlen($input) . " bytes");
+                    // app('log')->info("new request from client $clientKey. " . strlen($input) . " bytes");
                 }
                 unset($this->readables[$clientKey]);
             }
@@ -155,9 +155,12 @@ class ProcessManager
                 foreach ($this->taskQueue as $key => $task) {
                     if (!$task->isInProcess()) {
                         socket_write($this->workerConnections[$workerKey], $task->input());
-                        // dump("5.task given to worker $workerKey: " . strlen($task->input()) . " bytes");
                         $this->workerStatus[$workerKey] = 'busy';
                         $task->inProcess($workerKey);
+
+                        if ($workerKey > 1) {///> for observation         
+                            app('log') ->info("task given to worker $workerKey: " . strlen($task->input()) . " bytes");
+                        }
                         continue 2;
                     }
                 }
