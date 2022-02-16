@@ -34,6 +34,7 @@ class Worker extends Command
             $input = socket_read($pm, 5000);
 
             if (empty($input)) {
+                app('log')->info("Worker " . $this->argument('processNumber') . ". PM broke");
                 socket_close($pm);
                 break;
             }
@@ -42,7 +43,7 @@ class Worker extends Command
 
             $length = strlen($this->buffer);
             if ($this->buffer[$length - 1] == "\0") {
-                app('log')->info("Worker " . $this->argument('processNumber') . ". Reveived " . strlen($this->buffer) . " bytes");
+                // app('log')->info("Worker " . $this->argument('processNumber') . ". Reveived " . strlen($this->buffer) . " bytes");
                 $request = $this->makeRequest($this->buffer);
                 $response = $this->makeResponse();
                 $router = $this->makeRouter();

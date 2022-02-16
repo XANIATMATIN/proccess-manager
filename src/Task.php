@@ -6,8 +6,12 @@ class Task
 {
     protected $tries = 0, $maxTries = 3;
     protected $workerKey = Null;
-    public function __construct(protected int $clientKey, protected string $input)
+    protected $clientKey, $input;
+
+    public function __construct(int $clientKey,  string $input)
     {
+        $this->clientKey = $clientKey;
+        $this->input = $input;
     }
 
     public function input()

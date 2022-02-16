@@ -13,6 +13,9 @@ class ProcessManager
     public function run()
     {
         $this->clientPort = serveAndListen('client');
+        if (empty($this->clientPort)) {
+            return;
+        }
         $this->numOfProcess = config('processManager.numOfProcess', 1);
 
         while (true) {
@@ -51,7 +54,12 @@ class ProcessManager
     public function startProcess($processNumber)
     {
         $descriptorspec = [['pipe', 'r'], ['pipe', 'w'], ['pipe', 'w']];
-        $worker = proc_open('php artisan process-manager:worker ' . $processNumber, $descriptorspec, $this->pipes[$processNumber]);
+        $worker = proc_open(base_path() . '/artisan process-manager:worker ' . $processNumber, $descriptorspec, $this->pipes[$processNumber]);
+        if (get_resource_type($worker) != 'process') {
+            app('log')->error("Can not start Process $processNumber");
+        } else {
+            // app('log')->info("Procces $processNumber started");
+        }
         stream_set_blocking($this->pipes[$processNumber][1], 0);
         return $worker;
     }
@@ -70,7 +78,7 @@ class ProcessManager
         if (in_array($this->clientPort, $this->read)) {
             $protocol = $this->protocolFactoty(config('easySocket.defaultProtocol', 'http'), socket_accept($this->clientPort));
             $this->clientConnections[] = $protocol;
-            // dump('2.new client');
+            // app('log')->info('2.new client');
         }
     }
 
@@ -107,7 +115,7 @@ class ProcessManager
                             $task->removeWorkerKey();
                         }
                     }
-                    // dump("woker $workerKey broke");
+                    app('log')->error("woker $workerKey broke");
                     continue;
                 }
                 $this->workerStatus[$workerKey] = $fromWorker;
@@ -116,7 +124,7 @@ class ProcessManager
                         unset($this->taskQueue[$key]);
                     }
                 }
-                // dump("4.Worker $workerKey status: " . $this->workerStatus[$workerKey]);
+                // app('log')->info("4.Worker $workerKey status: " . $this->workerStatus[$workerKey]);
             }
         }
     }
