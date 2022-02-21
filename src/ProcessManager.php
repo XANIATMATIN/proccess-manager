@@ -78,7 +78,7 @@ class ProcessManager
         if (in_array($this->clientPort, $this->read)) {
             $protocol = $this->protocolFactoty(config('easySocket.defaultProtocol', 'http'), socket_accept($this->clientPort));
             $this->clientConnections[] = $protocol;
-            // app('log')->info('2.new client');
+            // app('log')->info('new client');
         }
     }
 
@@ -158,8 +158,8 @@ class ProcessManager
                         $this->workerStatus[$workerKey] = 'busy';
                         $task->inProcess($workerKey);
 
-                        if ($workerKey > 1) {///> for observation         
-                            app('log') ->info("task given to worker $workerKey: " . strlen($task->input()) . " bytes");
+                        if ($workerKey > 1) { ///> for observation         
+                            app('log')->info("task given to worker $workerKey: " . strlen($task->input()) . " bytes");
                         }
                         continue 2;
                     }
